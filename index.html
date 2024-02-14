@@ -32,6 +32,10 @@
         </tbody>
       </table>
     </div>
+    
+    <button class="btn btn-info mb-3" id="btn-partai">Suara Partai</button>
+    <p id="suara-partai">Jumlah suara partai: <span id="partai-count">0</span></p>
+   
     <button class="btn btn-danger mb-3" id="btn-rusak">Suara Rusak</button>
     <p id="suara-rusak">Jumlah suara rusak: <span id="rusak-count">0</span></p>
     <button class="btn btn-warning" id="reset-btn">Reset</button>
@@ -47,9 +51,11 @@
         { nama: "SAID HASYIM", suara: 0 },
         { nama: "RUDI ATTAUBAH", suara: 0 },
         { nama: "RAUZATUL JANNAH, S.Pd", suara: 0 },
-        { nama: "RUS'AN, S.HuR", suara: 0 },
-        { nama: "SUARA PARTAI", suara: 0 }
+        { nama: "RUS'AN, S.Hut", suara: 0 },
       ];
+      
+      let suaraPartai = parseInt(localStorage.getItem("suaraPartai")) || 0;
+     
 
       let suaraRusak = parseInt(localStorage.getItem("suaraRusak")) || 0;
 
@@ -68,6 +74,9 @@
             </tr>
           `);
         });
+        
+        $("#partai-count").text(suaraPartai);
+       
         $("#rusak-count").text(suaraRusak);
       }
 
@@ -91,6 +100,15 @@
           saveData();
         }
       });
+      
+       // Event listener untuk tombol suara Partai
+      $("#btn-partai").click(function() {
+        suaraPartai++;
+        $("#partai-count").text(suaraPartai);
+        localStorage.setItem("suaraPartai", suaraPartai);
+      });
+      
+     
 
       // Event listener untuk tombol suara rusak
       $("#btn-rusak").click(function() {
@@ -104,6 +122,8 @@
         candidates.forEach(function(calon) {
           calon.suara = 0;
         });
+        suaraPartai = 0;
+        saveData();
         suaraRusak = 0;
         saveData();
         location.reload(); // Reload halaman untuk memperbarui tabel
@@ -112,6 +132,9 @@
       // Menyimpan data calon dan suara rusak ke dalam localStorage
       function saveData() {
         localStorage.setItem("candidates", JSON.stringify(candidates));
+        
+        localStorage.setItem("suaraPartai", suaraPartai);
+        
         localStorage.setItem("suaraRusak", suaraRusak);
       }
     });
